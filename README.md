@@ -30,4 +30,13 @@ Setelah setiap sel memiliki label, fungsi ini mengekstrak informasi dan karakter
 
   * Kapan Dipakainya?: Dipakai kalau lu mau mendeteksi noda hitam, lubang, atau titik gosong di atas permukaan produk yang warnanya putih atau terang (kayak keramik atau kertas).
 
+### 3. Algoritma zhang-suen
+  * Cara Kerja: Bekerja secara paralel dengan membagi satu kali iterasi menjadi dua sub-tahap (mengecek piksel tetangga di arah genap dan ganjil secara bergantian).
+  * Kelebihan: Kecepatan komputasinya sangat tinggi dan efisien, sehingga sangat cocok untuk pemrosesan citra real-time atau data teks yang masif.
+  * Kekurangan: Kadang tidak menghasilkan kerangka yang benar-benar sempurna setebal 1 piksel. Pada beberapa pola diagonal atau sudut siku-siku, hasilnya bisa menyisakan garis dengan ketebalan 2 piksel atau efek tangga (staircase effect).
+
+### 3.1 Algoritma Hilditch
+  * Cara Kerja: Mengevaluasi piksel berdasarkan sekumpulan aturan ketat (biasanya ada 6 kondisi) dengan melihat jendela 3x3 piksel sekitarnya untuk memastikan penghapusan piksel tidak merusak konektivitas atau menghilangkan titik ujung (endpoint).
+  * Kelebihan: Kualitas skeleton yang dihasilkan lebih bersih, mulus, dan terjamin konsisten menjadi garis tunggal setebal persis 1 piksel. Sangat ideal untuk akurasi tinggi pada Optical Character Recognition (OCR).
+  * Kekurangan: Proses komputasinya lebih berat dan lambat dibandingkan Zhang-Suen karena pengecekan kondisionalnya yang lebih kompleks pada setiap piksel.
 
