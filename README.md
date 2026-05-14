@@ -60,3 +60,19 @@ Operasi morfologi bekerja optimal pada citra biner (hitam-putih). Oleh karena it
 Setelah mendapatkan masking atau citra biner vegetasi dari hasil NDVI, barulah operasi morfologi diaplikasikan untuk menyempurnakan bentuk area vegetasi tersebut:
   * Opening: Digunakan untuk menghapus noise atau titik-titik putih kecil di luar area vegetasi utama (misalnya rumput liar kecil di tengah jalan aspal yang ikut terdeteksi oleh NDVI).
   * Closing: Digunakan untuk menutup lubang-lubang hitam kecil di dalam area putih (misalnya area hutan yang lebat, tetapi ada bayangan gelap antar kanopi pohon yang tidak sengaja terdeteksi sebagai non-vegetasi oleh NDVI).
+
+# Analitik
+
+### Cara Menggunakan Algoritma Watershed untuk Memisahkan Sel yang Saling Menyentuh
+
+Algoritma Watershed mengibaratkan sebuah citra (gambar) seperti peta topografi 3D, di mana piksel terang dianggap sebagai "puncak bukit" dan piksel gelap sebagai "lembah". Konsep utamanya adalah "mengairi" lembah tersebut dari titik-titik pusat objek (marker), dan ketika air dari dua sumber sel yang berbeda bertemu, algoritma akan otomatis membangun "bendungan" alias garis batas pembatas.
+
+Alur kerjanya untuk memisahkan sel yang menyentuh adalah sebagai berikut:
+
+### 1. Mencari Sure Background (Latar Belakang Pasti): Citra biner sel diperbesar sedikit menggunakan operasi morfologi Dilasi. Area terluar dari hasil dilasi ini dipastikan adalah background atau latar belakang yang sebenarnya.
+
+### 2.Mencari Sure Foreground (Objek Pasti) dengan Distance Transform: Ini adalah kunci utama pemisahannya. Fungsi distance transform menghitung jarak setiap piksel di dalam sel menuju tepi sel terdekat. Bagian paling tengah (inti sel) akan memiliki nilai paling tinggi. Setelah di-threshold, kita akan mendapatkan titik-titik inti (marker) dari masing-masing sel yang sudah terpisah satu sama lain, meskipun bagian kulit luarnya saling menyentuh.
+
+### 3. Menentukan Area Unknown (Area Abu-abu): Area sisa di antara sure background dan sure foreground diklasifikasikan sebagai area unknown (tidak pasti). Sistem belum tahu apakah area ini milik sel A, sel B, atau background.
+
+### 4. Eksekusi Watershed: Algoritma Watershed kemudian dijalankan dengan patokan marker inti sel tadi. Algoritma akan mengekspansi area dari inti sel menuju area unknown. Tepat di titik pertemuan antara sel yang satu dengan sel lainnya, Watershed akan membentuk garis batas (batas pemisah) yang tegas.
