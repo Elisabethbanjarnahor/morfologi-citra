@@ -11,3 +11,23 @@ Fungsi ini bertugas memindai citra biner dan memberikan label (nomor urut unik) 
 Setelah setiap sel memiliki label, fungsi ini mengekstrak informasi dan karakteristik fisik dari setiap objek tersebut. Pada kode ini, properti yang digunakan meliputi:
   * `area`: Mengukur luas objek berdasarkan jumlah piksel. Properti ini digunakan sebagai thresholding ukuran (seperti kondisi `if r.area > 500`). Objek dengan luas di bawah 500 piksel akan diabaikan karena dianggap sebagai noise atau kotoran, bukan sel darah.
   * `bbox` (Bounding Box): Mengambil titik koordinat ekstrem (batas atas, bawah, kiri, dan kanan) dari setiap sel. Koordinat ini digunakan oleh OpenCV untuk menggambar kotak penanda pembatas di sekeliling sel pada citra hasil akhir.
+
+### Top Hat & Black Hat
+
+### Top-Hat Transform (Sering disebut White Top-Hat):
+
+  * Fungsi Utama: Mendeteksi atau menonjolkan objek/cacat berukuran kecil yang lebih terang daripada area sekitarnya.
+
+  * Cara Kerja Matematis: Citra asli dikurangi dengan citra hasil operasi Opening.
+
+  * Kapan Dipakainya?: Dipakai kalau lu mau mendeteksi goresan yang memantulkan cahaya (putih/terang) di atas permukaan plat besi yang warnanya gelap, atau mencari debu putih di atas kain berwarna gelap.
+
+### Black-Hat Transform (Sering disebut Bottom-Hat):
+
+  * Fungsi Utama: Mendeteksi atau menonjolkan objek/cacat berukuran kecil yang lebih gelap daripada area sekitarnya.
+
+  * Cara Kerja Matematis: Citra hasil operasi Closing dikurangi dengan citra asli.
+
+  * Kapan Dipakainya?: Dipakai kalau lu mau mendeteksi noda hitam, lubang, atau titik gosong di atas permukaan produk yang warnanya putih atau terang (kayak keramik atau kertas).
+
+
